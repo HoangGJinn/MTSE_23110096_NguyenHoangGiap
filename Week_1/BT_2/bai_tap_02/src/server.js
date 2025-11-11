@@ -12,9 +12,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 viewEngine(app);
 initWebRoutes(app);
-connect();
 
-let port = process.env.PORT || 8080;
-app.listen(port, () => {
-  console.log("Backend nodejs is running on the port: " + port);
-});
+// Kết nối MongoDB trước khi start server
+const startServer = async () => {
+  try {
+    await connect(); // Đợi MongoDB kết nối xong
+    
+    let port = process.env.PORT || 8080;
+    app.listen(port, () => {
+      console.log("🚀 Backend nodejs is running on the port: " + port);
+    });
+  } catch (error) {
+    console.error("❌ Cannot start server:", error);
+  }
+};
+
+startServer();

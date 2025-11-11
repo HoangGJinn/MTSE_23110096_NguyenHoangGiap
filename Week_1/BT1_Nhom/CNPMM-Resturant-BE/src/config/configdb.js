@@ -1,9 +1,9 @@
 "use strict";
 
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const connectMongo = async () => {
-  const uri = process.env.MONGO_URI || "mongodb+srv://hoanggiap:hoanggiap1597@cluster0.vbrnico.mongodb.net/bai_tap_02?appName=Cluster0";
+  const uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/node_fulltask";
   try {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
@@ -15,4 +15,4 @@ const connectMongo = async () => {
   }
 };
 
-module.exports = connectMongo;
+export default connectMongo;
