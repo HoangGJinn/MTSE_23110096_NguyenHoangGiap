@@ -8,25 +8,25 @@
 <body>
   <h1>Edit user</h1>
 
-  <form action="/users/edit/<%= data.id %>" method="post">
+  <form action="/users/edit/<%= user.id %>" method="post">
     <!-- hidden id -->
-    <input type="hidden" name="id" value="<%= data.id %>" />
+    <input type="hidden" name="id" value="<%= user.id %>" />
 
     <div>
       <label>First Name
-        <input type="text" name="firstName" value="<%= data.firstName || '' %>"/>
+        <input type="text" name="firstName" value="<%= user.firstName || '' %>"/>
       </label>
     </div>
 
     <div>
       <label>Last Name
-        <input type="text" name="lastName" value="<%= data.lastName || '' %>"/>
+        <input type="text" name="lastName" value="<%= user.lastName || '' %>"/>
       </label>
     </div>
 
     <div>
       <label>Address
-        <input type="text" name="address" value="<%= data.address || '' %>" />
+        <input type="text" name="address" value="<%= user.address || '' %>" />
       </label>
     </div>
 
