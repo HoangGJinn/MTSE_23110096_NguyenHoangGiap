@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>User list</title>
+  <!-- thêm CSS nếu cần -->
+</head>
+<body>
+  <h1>Users</h1>
+
+  <p><a href="/users/create">Create new user</a></p>
+
+  <table style="width:100%; border-collapse: collapse;" border="1">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if (Array.isArray(users) && users.length > 0) { %>
+        <% for (let i = 0; i < users.length; i++) { 
+             const u = users[i];
+        %>
+          <tr>
+            <td><%= u.email %></td>
+            <td><%= u.firstName %></td>
+            <td><%= u.lastName %></td>
+            <td><%= u.address || "" %></td>
+            <td>
+              <a href="/users/edit/<%= u.id %>">Edit</a> |
+              <a href="/users/delete/<%= u.id %>" onclick="return confirm('Are you sure to delete this user?');">Delete</a>
+            </td>
+          </tr>
+        <% } %>
+      <% } else { %>
+        <tr>
+          <td colspan="5" style="text-align:center;">No users found</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>

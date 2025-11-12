@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Edit user</title>
+  <!-- thêm CSS nếu cần -->
+</head>
+<body>
+  <h1>Edit user</h1>
+
+  <form action="/users/edit/<%= data.id %>" method="post">
+    <!-- hidden id -->
+    <input type="hidden" name="id" value="<%= data.id %>" />
+
+    <div>
+      <label>First Name
+        <input type="text" name="firstName" value="<%= data.firstName || '' %>"/>
+      </label>
+    </div>
+
+    <div>
+      <label>Last Name
+        <input type="text" name="lastName" value="<%= data.lastName || '' %>"/>
+      </label>
+    </div>
+
+    <div>
+      <label>Address
+        <input type="text" name="address" value="<%= data.address || '' %>" />
+      </label>
+    </div>
+
+    <div>
+      <button type="submit">Update</button>
+      <a href="/users">Back</a>
+    </div>
+  </form>
+</body>
+</html>

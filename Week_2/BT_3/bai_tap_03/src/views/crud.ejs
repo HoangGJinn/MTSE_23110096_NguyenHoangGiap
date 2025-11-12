@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Create user</title>
+  <!-- thêm CSS nếu cần -->
+</head>
+<body>
+  <h1>Create new user</h1>
+
+  <form action="/users/create" method="post">
+    <div>
+      <label>Email
+        <input type="email" name="email" required />
+      </label>
+    </div>
+
+    <div>
+      <label>Password
+        <input type="password" name="password" required />
+      </label>
+    </div>
+
+    <div>
+      <label>First Name
+        <input type="text" name="firstName" />
+      </label>
+    </div>
+
+    <div>
+      <label>Last Name
+        <input type="text" name="lastName" />
+      </label>
+    </div>
+
+    <div>
+      <label>Phone Number
+        <input type="text" name="phoneNumber" />
+      </label>
+    </div>
+
+    <div>
+      <label>Gender
+        <!-- model dùng boolean; gửi "true"/"false" để controller dễ convert -->
+        <select name="gender">
+          <option value="true">Male</option>
+          <option value="false">Female</option>
+        </select>
+      </label>
+    </div>
+
+    <div>
+      <label>Role
+        <select name="roleId">
+          <option value="1">Admin</option>
+          <option value="2">Doctor</option>
+          <option value="3">Patient</option>
+        </select>
+      </label>
+    </div>
+
+    <div>
+      <button type="submit">Sign in</button>
+      <a href="/users">Cancel</a>
+    </div>
+  </form>
+</body>
+</html>
