@@ -1,7 +1,9 @@
 const {
     createUserService,
     loginService,
-    getUserService
+    getUserService,
+    forgotPasswordService,
+    resetPasswordService
 } = require('../services/userService');
 
 // Controller: Đăng ký user
@@ -73,9 +75,63 @@ const getAccount = async (req, res) => {
     }
 }
 
+// Controller: Kiểm tra email cho quên mật khẩu
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({
+                EC: 1,
+                EM: "Email là bắt buộc"
+            });
+        }
+        
+        const data = await forgotPasswordService(email);
+        
+        if (data.EC !== 0) {
+            return res.status(404).json(data);
+        }
+        
+        return res.status(200).json(data);
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ EC: -1, EM: "Server error" });
+    }
+};
+
+// Controller: Đặt lại mật khẩu
+const resetPassword = async (req, res) => {
+    try {
+        const { email, newPassword, confirmPassword } = req.body;
+        
+        if (!email || !newPassword || !confirmPassword) {
+            return res.status(400).json({
+                EC: 1,
+                EM: "Vui lòng điền đầy đủ thông tin"
+            });
+        }
+        
+        const data = await resetPasswordService(email, newPassword, confirmPassword);
+        
+        if (data.EC !== 0) {
+            return res.status(400).json(data);
+        }
+        
+        return res.status(200).json(data);
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ EC: -1, EM: "Server error" });
+    }
+};
+
 module.exports = {
     createUser,
     handleLogin,
     getUser,
     getAccount,
+    forgotPassword,
+    resetPassword,
 };

@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express'); //commonjs
 const configViewEngine = require('./config/viewEngine');
 const apiRoutes = require('./routes/api');
-const connection = require('./config/database');
+const {connection} = require('./config/database');
 const {getHomepage} = require('./controllers/homeController');
 const cors = require('cors');
 

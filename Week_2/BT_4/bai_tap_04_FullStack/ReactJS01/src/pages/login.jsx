@@ -81,9 +81,14 @@ const LoginPage = () => {
                         </Form.Item>
 
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                Login
-                            </Button>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Button type="primary" htmlType="submit">
+                                    Login
+                                </Button>
+                                <Link to="/forgot-password" style={{ color: '#1890ff' }}>
+                                    Quên mật khẩu?
+                                </Link>
+                            </div>
                         </Form.Item>
                     </Form>
 

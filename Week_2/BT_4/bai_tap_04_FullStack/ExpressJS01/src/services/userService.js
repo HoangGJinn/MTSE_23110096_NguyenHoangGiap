@@ -1,7 +1,8 @@
 require('dotenv').config();
 console.log('>>> JWT_SECRET loaded:', !!process.env.JWT_SECRET, process.env.JWT_SECRET ? '[hidden]' : null);
 
-const User = require('../models/user');
+const db = require('../../models');
+const User = db.User;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
 const saltRounds = 10;
@@ -79,7 +80,9 @@ const loginService = async (email, password) => {
 const getUserService = async () => {
     try {
         // Lấy toàn bộ user, bỏ field password
-        let result = await User.find({}).select("-password");
+        let result = await User.findAll({
+            attributes: { exclude: ['password'] }
+        });
         return result;
 
     } catch (error) {
@@ -88,4 +91,80 @@ const getUserService = async () => {
     }
 };
 
-module.exports = {createUserService, loginService, getUserService};
+const forgotPasswordService = async (email) => {
+    try {
+        // Kiểm tra email có tồn tại không
+        const user = await User.findOne({ where: { email } });
+        
+        if (!user) {
+            return {
+                EC: 1,
+                EM: "Email không tồn tại trong hệ thống"
+            };
+        }
+        
+        return {
+            EC: 0,
+            EM: "Email hợp lệ",
+            data: {
+                email: user.email,
+                name: user.name
+            }
+        };
+    } catch (error) {
+        console.log("Lỗi forgotPasswordService: ", error);
+        return {
+            EC: -1,
+            EM: "Lỗi server"
+        };
+    }
+};
+
+const resetPasswordService = async (email, newPassword, confirmPassword) => {
+    try {
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+        if (newPassword !== confirmPassword) {
+            return {
+                EC: 1,
+                EM: "Mật khẩu xác nhận không khớp"
+            };
+        }
+        
+        // Kiểm tra độ dài mật khẩu
+        if (newPassword.length < 6) {
+            return {
+                EC: 2,
+                EM: "Mật khẩu phải có ít nhất 6 ký tự"
+            };
+        }
+        
+        // Tìm user
+        const user = await User.findOne({ where: { email } });
+        
+        if (!user) {
+            return {
+                EC: 3,
+                EM: "Email không tồn tại"
+            };
+        }
+        
+        // Hash mật khẩu mới
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+        
+        // Cập nhật mật khẩu
+        await user.update({ password: hashedPassword });
+        
+        return {
+            EC: 0,
+            EM: "Đổi mật khẩu thành công"
+        };
+    } catch (error) {
+        console.log("Lỗi resetPasswordService: ", error);
+        return {
+            EC: -1,
+            EM: "Lỗi server"
+        };
+    }
+};
+
+module.exports = {createUserService, loginService, getUserService, forgotPasswordService, resetPasswordService};

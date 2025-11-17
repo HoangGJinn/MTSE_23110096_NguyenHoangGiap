@@ -1,26 +1,34 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+const { Sequelize } = require('sequelize');
+const config = require('../../config/config.json');
 
-const dbState = [{
-    value: 0,
-    label: "Disconnected"
-},
-{
-    value: 1,
-    label: "Connected"
-},
-{    value: 2,
-    label: "Connecting"
-},
-{    value: 3,
-    label: "Disconnecting"
-}];
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = config[env];
+
+const sequelize = new Sequelize(
+    dbConfig.database,
+    dbConfig.username,
+    dbConfig.password,
+    {
+        host: dbConfig.host,
+        dialect: dbConfig.dialect,
+        logging: false,
+        pool: {
+            max: 10,
+            min: 0,
+            acquire: 30000,
+            idle: 10000
+        }
+    }
+);
 
 const connection = async () => {
-    await mongoose.connect(process.env.MONGODB_URL);
-    const state = Number(mongoose.connection.readyState);
-    // console.log(`Database connection state: ${dbState[state].label}`);
-    console.log(dbState.find(item => item.value === state).label);
-}
+    try {
+        await sequelize.authenticate();
+        console.log('Connected to MySQL database via Sequelize');
+    } catch (error) {
+        console.error('Unable to connect to the database:', error);
+        throw error;
+    }
+};
 
-module.exports = connection;
+module.exports = { connection, sequelize };
