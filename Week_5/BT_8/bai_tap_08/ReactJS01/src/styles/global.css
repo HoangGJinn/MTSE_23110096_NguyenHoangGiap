@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Đảm bảo Ant Design message hiển thị trên cùng */
+.ant-message {
+    z-index: 9999 !important;
+    position: fixed !important;
+    top: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}

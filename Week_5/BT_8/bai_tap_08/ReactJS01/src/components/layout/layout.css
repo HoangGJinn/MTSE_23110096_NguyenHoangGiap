@@ -1,0 +1,154 @@
+.layout-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.layout-content {
+    flex: 1;
+    padding: 2rem 0;
+    background: #f5f5f5;
+}
+
+/* Floating Arrow Button - Left side, middle of screen */
+.floating-arrow-btn {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1001;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.floating-arrow-btn:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.floating-arrow-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.floating-arrow-btn .anticon {
+    font-size: 20px;
+}
+
+/* Sidebar Backdrop */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Floating Sidebar */
+.floating-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 300px;
+    max-width: 85vw;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(-100%);
+}
+
+.floating-sidebar.sidebar-open {
+    transform: translateX(0);
+}
+
+.floating-sidebar.sidebar-closed {
+    transform: translateX(-100%);
+}
+
+/* Sidebar content styling */
+.floating-sidebar .sidebar-container {
+    min-height: 100%;
+    padding: 1.5rem;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* Adjust arrow button position when sidebar is open */
+.floating-arrow-btn.sidebar-open {
+    left: 320px;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+    .floating-arrow-btn.sidebar-open {
+        left: 295px;
+    }
+}
+
+.layout-main {
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+
+/* Admin Layout Styles */
+.admin-layout {
+    background: #f0f2f5;
+}
+
+.admin-content {
+    padding: 1.5rem 0;
+    background: #f0f2f5;
+}
+
+.admin-main {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .layout-content {
+        padding: 1rem 0;
+    }
+    
+    .floating-arrow-btn {
+        width: 44px;
+        height: 44px;
+        left: 15px;
+    }
+    
+    .floating-arrow-btn .anticon {
+        font-size: 18px;
+    }
+    
+    .floating-sidebar {
+        width: 280px;
+        max-width: 80vw;
+    }
+    
+    .admin-content {
+        padding: 1rem 0;
+    }
+}
+

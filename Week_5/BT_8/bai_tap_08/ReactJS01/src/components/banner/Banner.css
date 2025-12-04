@@ -1,0 +1,342 @@
+.promo-banner {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    background: linear-gradient(135deg, #0a1628 0%, #1a2f4a 50%, #0f1e35 100%);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.banner-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+}
+
+.circuit-pattern {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, rgba(0, 150, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(0, 150, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    animation: circuitMove 20s linear infinite;
+}
+
+@keyframes circuitMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+.glow-effect {
+    position: absolute;
+    left: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(0, 150, 255, 0.4) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.6; transform: translateY(-50%) scale(1); }
+    50% { opacity: 0.8; transform: translateY(-50%) scale(1.1); }
+}
+
+.banner-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 4rem;
+    min-height: 400px;
+    gap: 2rem;
+}
+
+.banner-left {
+    flex: 0 0 250px;
+}
+
+.brand-section {
+    color: white;
+}
+
+.brand-name {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #00a8ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(0, 168, 255, 0.5);
+    letter-spacing: 2px;
+}
+
+.brand-slogan {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.banner-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.laptops-display {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.laptop-item {
+    position: relative;
+    width: 140px;
+    height: 100px;
+    perspective: 1000px;
+    transition: transform 0.3s ease;
+}
+
+.laptop-item:hover {
+    transform: translateY(-10px);
+}
+
+.laptop-screen {
+    width: 100%;
+    height: 70px;
+    background: #1a1a1a;
+    border-radius: 8px 8px 2px 2px;
+    border: 2px solid #333;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.screen-content {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.8;
+}
+
+.windows-screen {
+    background: linear-gradient(135deg, #0078d4 0%, #106ebe 50%, #005a9e 100%);
+    position: relative;
+}
+
+.windows-screen::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 30px 0 0 white, 0 30px 0 white, 30px 30px 0 white;
+}
+
+.gaming-screen {
+    background: linear-gradient(135deg, #1a0000 0%, #4d0000 50%, #1a0000 100%);
+    position: relative;
+}
+
+.gaming-screen::before {
+    content: '⚡';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000;
+}
+
+.apple-screen {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+    position: relative;
+}
+
+.apple-screen::after {
+    content: '🍎';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+}
+
+.laptop-keyboard {
+    width: 100%;
+    height: 30px;
+    background: #2a2a2a;
+    border-radius: 0 0 8px 8px;
+    margin-top: -2px;
+    position: relative;
+}
+
+.blue-backlight {
+    background: linear-gradient(135deg, #1a2a3a 0%, #0a4a6a 100%);
+    box-shadow: 0 0 20px rgba(0, 150, 255, 0.6);
+}
+
+.red-accent {
+    background: linear-gradient(135deg, #2a1a1a 0%, #6a0a0a 100%);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+.laptop-3 {
+    transform: rotateY(15deg);
+}
+
+.shop-now-btn {
+    height: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0 3rem;
+    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+.shop-now-btn:hover {
+    background: linear-gradient(135deg, #0097e6 0%, #0078c7 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 168, 255, 0.6);
+}
+
+.banner-right {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.sale-badge {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(0, 168, 255, 0.6);
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(0, 168, 255, 0.6); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 168, 255, 0.8); }
+}
+
+.sale-percent {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.promo-text {
+    text-align: center;
+    color: white;
+}
+
+.promo-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.promo-subtitle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(135deg, #00a8ff 0%, #0097e6 100%);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .banner-content {
+        padding: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .banner-left {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+    
+    .banner-center {
+        flex: 1 1 100%;
+    }
+    
+    .banner-right {
+        flex: 1 1 100%;
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .promo-banner {
+        min-height: 300px;
+    }
+    
+    .banner-content {
+        padding: 1.5rem;
+        min-height: 300px;
+    }
+    
+    .brand-name {
+        font-size: 2rem;
+    }
+    
+    .laptops-display {
+        gap: 1rem;
+    }
+    
+    .laptop-item {
+        width: 100px;
+        height: 75px;
+    }
+    
+    .laptop-screen {
+        height: 50px;
+    }
+    
+    .sale-badge {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .promo-title {
+        font-size: 1.5rem;
+    }
+}
+
