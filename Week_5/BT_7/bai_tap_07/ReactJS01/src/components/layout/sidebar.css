@@ -1,0 +1,125 @@
+.sidebar-container {
+    background: #fff;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-btn {
+    color: #666;
+}
+
+.filter-card {
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}
+
+.filter-card .ant-card-head {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 0.75rem 1rem;
+}
+
+.filter-card .ant-card-head-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.filter-card .ant-card-body {
+    padding: 0.75rem;
+}
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid #e0e0e0;
+}
+
+.category-item:hover {
+    background: #f5f5f5;
+    border-color: #1890ff;
+}
+
+.category-item.active {
+    background: #e6f7ff;
+    border-color: #1890ff;
+    font-weight: 600;
+}
+
+.category-icon {
+    font-size: 1rem;
+}
+
+.category-name {
+    flex: 1;
+    font-size: 0.875rem;
+}
+
+.price-filter {
+    padding: 0.5rem 0;
+}
+
+.price-range-display {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.reset-btn {
+    margin-top: 1rem;
+    height: 40px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.sidebar-drawer .ant-drawer-body {
+    padding: 0;
+}
+
+.sidebar-drawer .sidebar-container {
+    box-shadow: none;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar-container {
+        position: static;
+        top: auto;
+    }
+}
+

@@ -1,0 +1,167 @@
+/* Layout chung */
+.cart-page {
+  min-height: 80vh;
+  background-color: #f5f7fa; /* Màu nền xám nhẹ hiện đại */
+  padding: 40px 20px;
+}
+
+.cart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cart-page-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background-color: #f5f7fa;
+}
+
+.cart-title {
+  margin-bottom: 24px !important;
+  color: #333;
+}
+
+/* Card Style cho danh sách bên trái */
+.cart-list-card {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  background: white;
+  margin-bottom: 20px;
+}
+
+/* --- QUAN TRỌNG: Styles cho Sidebar bên phải --- */
+.cart-summary-wrapper {
+  position: sticky; /* Giữ khung thanh toán trượt theo */
+  top: 20px; /* Cách mép trên 20px */
+}
+
+.cart-summary-card {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+/* Custom scroll cho danh sách chọn nếu quá dài */
+.select-items-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  padding-right: 5px;
+}
+
+/* Scrollbar đẹp */
+.select-items-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.select-items-scroll::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+.select-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed #f0f0f0;
+}
+
+.select-item-name {
+  margin-left: 8px;
+  font-weight: 500;
+  color: #555;
+  /* Cắt chữ nếu tên quá dài */
+  display: inline-block;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.select-item-row {
+  transition: background-color 0.2s;
+}
+
+.select-item-row:hover {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 8px 4px;
+  margin: 0 -4px;
+}
+
+.checkout-btn {
+  margin-top: 20px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.checkout-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(24, 144, 255, 0.4);
+}
+
+.checkout-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.summary-total {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+/* Loading Spinner đơn giản */
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #1890ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ẩn nút "Thanh toán" trong CartWidget từ giap-cart-lib */
+/* Chỉ ẩn button "Thanh toán" ở cấp độ tổng tiền, không ảnh hưởng đến button trong CartItem */
+.cart-widget-wrapper > div > div:last-child > button {
+  display: none !important;
+}
+
+.cart-widget-wrapper h2 {
+  display: none; /* Ẩn tiêu đề "Giỏ hàng của bạn" vì đã có ở trên */
+}
+
+.cart-widget-wrapper > div > div:last-child {
+  margin-top: 0 !important; /* Bỏ margin của tổng tiền trong widget */
+}
+
+/* Đảm bảo các nút +/- trong CartItem hiển thị đúng */
+.cart-widget-wrapper button {
+  min-width: 32px !important;
+  min-height: 32px !important;
+}
+
+/* Đảm bảo container của nút +/- không bị overflow */
+.cart-widget-wrapper > div > div {
+  overflow: visible !important;
+}
+
+/* Responsive: Trên Mobile thì bỏ sticky */
+@media (max-width: 991px) {
+  .cart-summary-wrapper {
+    position: static;
+    margin-top: 20px;
+  }
+}
