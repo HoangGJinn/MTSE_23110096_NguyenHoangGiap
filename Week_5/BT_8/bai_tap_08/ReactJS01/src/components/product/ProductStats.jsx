@@ -15,8 +15,9 @@ const ProductStats = ({ productId }) => {
     const fetchStats = async () => {
         try {
             const response = await getProductStatsAPI(productId);
-            if (response && response.data && response.data.EC === 0) {
-                setStats(response.data.data);
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setStats(response.data);
             }
         } catch (error) {
             console.error('Error fetching stats:', error);

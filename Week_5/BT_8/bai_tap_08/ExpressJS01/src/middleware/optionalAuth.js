@@ -1,15 +1,12 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { refreshTokenService } = require('../services/userService');
+const db = require('../../models');
+const User = db.User;
 
-const auth = async (req, res, next) => {
-    const white_lists = ["/", "/register", "/login", "/refresh-token", "/forgot-password", "/reset-password", "/products", "/categories"];
-
-    // Nếu URL thuộc whitelist => bỏ qua kiểm tra token
-    if (white_lists.find(item => item === req.path)) {
-        return next();
-    }
-
+// Optional auth middleware - không bắt buộc phải có token
+// Nếu có token hợp lệ thì set req.user, nếu không thì tiếp tục mà không có req.user
+const optionalAuth = async (req, res, next) => {
     // Lấy token từ header hoặc cookie
     let token = null;
     
@@ -25,8 +22,6 @@ const auth = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
             // Lấy user từ database để có id
-            const db = require('../../models');
-            const User = db.User;
             const user = await User.findOne({ where: { email: decoded.email } });
             
             if (user) {
@@ -39,10 +34,7 @@ const auth = async (req, res, next) => {
                     decryptedBy: "hoainqt"
                 };
             } else {
-                return res.status(401).json({
-                    EC: 1,
-                    EM: "User không tồn tại"
-                });
+                req.user = undefined;
             }
 
             return next();
@@ -65,13 +57,10 @@ const auth = async (req, res, next) => {
                                 sameSite: 'lax'
                             });
 
-                            // Lấy user từ database để có id
-                            const db = require('../../models');
-                            const User = db.User;
+                            // Lấy user từ database
                             const user = await User.findOne({ where: { email: refreshData.user.email } });
                             
                             if (user) {
-                                // Gắn data user vào req
                                 req.user = {
                                     id: user.id,
                                     email: user.email,
@@ -80,10 +69,7 @@ const auth = async (req, res, next) => {
                                     decryptedBy: "hoainqt"
                                 };
                             } else {
-                                return res.status(401).json({
-                                    EC: 1,
-                                    EM: "User không tồn tại"
-                                });
+                                req.user = undefined;
                             }
 
                             return next();
@@ -94,22 +80,17 @@ const auth = async (req, res, next) => {
                 }
             }
 
-            console.log('Auth error:', error);
-            // Xóa cookie nếu token không hợp lệ
-            res.clearCookie('access_token');
-            res.clearCookie('refresh_token');
-            return res.status(401).json({
-                EC: 1,
-                EM: "Token bị hết hạn hoặc không hợp lệ"
-            });
+            // Nếu token không hợp lệ, không set req.user nhưng vẫn tiếp tục
+            console.log('Optional auth: Token không hợp lệ, tiếp tục không có user');
+            req.user = undefined;
+            return next();
         }
     } else {
-        // Không có token
-        return res.status(401).json({
-            EC: 1,
-            EM: "Bạn chưa truyền Access Token hoặc token bị hết hạn"
-        });
+        // Không có token, tiếp tục mà không có req.user
+        req.user = undefined;
+        return next();
     }
 };
 
-module.exports = auth;
+module.exports = optionalAuth;
+

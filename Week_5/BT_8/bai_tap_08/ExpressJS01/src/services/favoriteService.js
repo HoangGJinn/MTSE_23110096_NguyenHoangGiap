@@ -66,13 +66,10 @@ const getFavorites = async (userId, page = 1, limit = 10) => {
       order: [['createdAt', 'DESC']]
     });
 
-    // Filter ra các sản phẩm đã bị xóa (null) và convert sang JSON
+    // Filter ra các sản phẩm đã bị xóa (null)
     const validFavorites = rows
       .filter(fav => fav.product !== null)
-      .map(fav => {
-        const product = fav.product;
-        return product.toJSON ? product.toJSON() : product;
-      });
+      .map(fav => fav.product);
 
     // Đếm lại số favorites hợp lệ
     const validCount = validFavorites.length;

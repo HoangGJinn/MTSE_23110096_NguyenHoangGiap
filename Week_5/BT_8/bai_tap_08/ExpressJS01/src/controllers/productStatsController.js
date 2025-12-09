@@ -52,12 +52,11 @@ const getSimilar = async (req, res) => {
 const getProductDetailWithStats = async (req, res) => {
   try {
     const { id } = req.params;
+    const productId = parseInt(id);
     const userId = req.user?.id;
 
-    console.log('getProductDetailWithStats - Product ID:', id, 'User ID:', userId);
+    console.log('Getting product detail for id:', id, 'parsed:', productId, 'userId:', userId);
 
-    // Validate id
-    const productId = parseInt(id);
     if (isNaN(productId)) {
       return res.status(400).json({
         EC: 1,
@@ -68,31 +67,43 @@ const getProductDetailWithStats = async (req, res) => {
     const product = await getProductByIdService(productId, true);
     
     if (!product) {
-      console.log('Product not found for ID:', productId);
+      console.log('Product not found for id:', id);
       return res.status(404).json({
         EC: 1,
         EM: 'Sản phẩm không tồn tại'
       });
     }
 
+    console.log('Product found:', product.id, product.name);
+
     // Lấy sản phẩm tương tự
-    const similarProducts = await getSimilarProducts(productId, 4);
+    const similarProducts = await getSimilarProducts(parseInt(id), 4);
+    console.log('Similar products count:', similarProducts.length);
 
     // Kiểm tra yêu thích nếu có user
     let isFavorite = false;
     if (userId) {
-      const { checkFavorite } = require('../services/favoriteService');
-      isFavorite = await checkFavorite(userId, productId);
+      try {
+        const { checkFavorite } = require('../services/favoriteService');
+        isFavorite = await checkFavorite(userId, parseInt(id));
+      } catch (favError) {
+        console.error('Error checking favorite:', favError);
+        // Không fail request nếu check favorite lỗi
+      }
     }
+
+    const responseData = {
+      product,
+      similarProducts,
+      isFavorite
+    };
+
+    console.log('Sending response with product id:', product.id);
 
     return res.status(200).json({
       EC: 0,
       EM: 'Get product detail success',
-      data: {
-        product,
-        similarProducts,
-        isFavorite
-      }
+      data: responseData
     });
   } catch (error) {
     console.error('getProductDetailWithStats Error:', error);

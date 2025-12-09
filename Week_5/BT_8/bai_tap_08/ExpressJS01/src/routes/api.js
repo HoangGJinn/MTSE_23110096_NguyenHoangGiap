@@ -29,6 +29,7 @@ const {
     getProductDetailWithStats
 } = require('../controllers/productStatsController');
 const auth = require('../middleware/auth');
+const optionalAuth = require('../middleware/optionalAuth');
 const delay = require('../middleware/delay');
 const { isAdmin, isUser } = require('../middleware/authorization');
 const validate = require('../middleware/validate');
@@ -69,6 +70,9 @@ routerAPI.get("/categories", getCategories); // Xem danh mục
 routerAPI.get("/products/:productId/stats", getStats); // Lấy thống kê sản phẩm
 routerAPI.get("/products/:productId/similar", getSimilar); // Lấy sản phẩm tương tự
 routerAPI.get("/products/:productId/comments", getProductComments); // Lấy bình luận sản phẩm
+
+// Product detail with stats (optional auth - có thể xem không cần đăng nhập)
+routerAPI.get("/products/:id/detail", optionalAuth, getProductDetailWithStats); // Lấy chi tiết với stats và similar
 
 // Route này phải đặt SAU các route cụ thể
 routerAPI.get("/products/:id", getProductById); // Xem chi tiết sản phẩm

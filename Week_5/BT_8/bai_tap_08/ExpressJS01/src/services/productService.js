@@ -112,19 +112,18 @@ const getProductByIdService = async (id, includeStats = false) => {
             return null;
         }
 
-        // Convert product to JSON
-        const productJson = product.toJSON();
-
         // Nếu yêu cầu thống kê, thêm vào response
         if (includeStats) {
             const stats = await getProductStats(id);
+            const productJson = product.toJSON();
             return {
                 ...productJson,
                 stats: stats || { purchaseCount: 0, commentCount: 0 }
             };
         }
 
-        return productJson;
+        // Trả về plain object để đảm bảo consistency
+        return product.toJSON();
     } catch (error) {
         console.log("Lỗi getProductByIdService: ", error);
         return null;

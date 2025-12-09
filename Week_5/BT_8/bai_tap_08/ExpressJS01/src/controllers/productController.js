@@ -44,16 +44,7 @@ const getProductById = async (req, res) => {
         const { id } = req.params;
         const includeStats = req.query.stats === 'true';
         
-        // Validate id
-        const productId = parseInt(id);
-        if (isNaN(productId)) {
-            return res.status(400).json({
-                EC: 1,
-                EM: "ID sản phẩm không hợp lệ"
-            });
-        }
-        
-        const product = await getProductByIdService(productId, includeStats);
+        const product = await getProductByIdService(id, includeStats);
         
         if (!product) {
             return res.status(404).json({
@@ -68,9 +59,8 @@ const getProductById = async (req, res) => {
             data: product
         });
     } catch (error) {
-        console.error('getProductById Error:', error);
-        console.error('Error stack:', error.stack);
-        return res.status(500).json({ EC: -1, EM: "Server error: " + error.message });
+        console.log(error);
+        return res.status(500).json({ EC: -1, EM: "Server error" });
     }
 };
 

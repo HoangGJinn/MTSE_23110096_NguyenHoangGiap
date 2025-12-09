@@ -17,6 +17,7 @@ import ForgotPasswordPage from './pages/forgot-password.jsx';
 import AdminDashboard from './pages/admin-dashboard.jsx';
 import CartPage from './pages/cart.jsx';
 import ProductDetailPage from './pages/product-detail.jsx';
+import FavoritesPage from './pages/favorites.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { AuthWrapper } from './components/context/auth.context.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
             {
                 path: "product/:id",
                 element: <ProductDetailPage />,
+            },
+            {
+                path: "favorites",
+                element: (
+                    <ProtectedRoute>
+                        <FavoritesPage />
+                    </ProtectedRoute>
+                ),
             },
             {
                 path: "*",

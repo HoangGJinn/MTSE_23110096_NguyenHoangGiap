@@ -7,7 +7,8 @@ import {
     LoginOutlined,
     HomeOutlined,
     MenuOutlined,
-    AppstoreOutlined
+    AppstoreOutlined,
+    HeartOutlined
 } from '@ant-design/icons';
 import { Input, Badge, Dropdown, Button, Drawer, App } from "antd";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
@@ -194,6 +195,13 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
 
                         {/* Right Actions */}
                         <div className="header-actions">
+                            {auth.isAuthenticated && (
+                                <Link to="/favorites" className="action-item">
+                                    <HeartOutlined className="text-2xl" style={{ color: '#ff4d4f' }} />
+                                    <span className="action-label">Yêu thích</span>
+                                </Link>
+                            )}
+                            
                             <Link to="/cart" className="action-item" onClick={handleCartClick}>
                                 <Badge count={0} showZero={false}>
                                     <ShoppingCartOutlined className="text-2xl" />
@@ -293,6 +301,9 @@ const Header = ({ onOpenLogin, onOpenRegister }) => {
                     ))}
                     {auth.isAuthenticated && (
                         <>
+                            <Link to="/favorites" className="mobile-menu-item" onClick={() => setMobileMenuOpen(false)}>
+                                <HeartOutlined /> Sản phẩm yêu thích
+                            </Link>
                             <Link to="/profile" className="mobile-menu-item" onClick={() => setMobileMenuOpen(false)}>
                                 <UserOutlined /> Thông tin tài khoản
                             </Link>

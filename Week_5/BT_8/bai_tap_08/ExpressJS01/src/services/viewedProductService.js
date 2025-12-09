@@ -49,21 +49,20 @@ const addViewedProduct = async (userId, productId) => {
 // Lấy danh sách sản phẩm đã xem của user
 const getViewedProducts = async (userId, limit = 10) => {
   try {
-    // Lấy nhiều hơn limit để có thể filter và vẫn đủ số lượng
     const viewedProducts = await ViewedProduct.findAll({
       where: { userId },
       include: [{
         model: Product,
         as: 'product',
-        required: false, // LEFT JOIN để không bỏ qua records nếu product bị xóa
         include: [{
           model: Category,
           as: 'category',
           attributes: ['id', 'name']
         }]
       }],
-      limit: parseInt(limit) * 2, // Lấy nhiều hơn để filter
-      order: [['viewedAt', 'DESC']]
+      limit: parseInt(limit),
+      order: [['viewedAt', 'DESC']],
+      distinct: true
     });
 
     // Loại bỏ trùng lặp sản phẩm (chỉ lấy lần xem gần nhất) và filter null products
@@ -71,24 +70,15 @@ const getViewedProducts = async (userId, limit = 10) => {
     const productIds = new Set();
     
     for (const viewed of viewedProducts) {
-      // Chỉ lấy sản phẩm còn tồn tại và chưa có trong danh sách
       if (viewed.product && !productIds.has(viewed.productId)) {
         productIds.add(viewed.productId);
-        // Convert Sequelize model to JSON
-        const productJson = viewed.product.toJSON ? viewed.product.toJSON() : viewed.product;
-        uniqueProducts.push(productJson);
-        
-        // Dừng khi đủ số lượng
-        if (uniqueProducts.length >= parseInt(limit)) {
-          break;
-        }
+        uniqueProducts.push(viewed.product);
       }
     }
 
     return uniqueProducts;
   } catch (error) {
     console.error('Lỗi getViewedProducts: ', error);
-    console.error('Error stack:', error.stack);
     return null;
   }
 };

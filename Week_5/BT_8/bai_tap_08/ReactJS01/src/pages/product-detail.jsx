@@ -46,65 +46,69 @@ const ProductDetailPage = () => {
     const fetchProduct = async () => {
         setLoading(true);
         try {
-            // Nếu đã đăng nhập, dùng API có stats và similar products
-            if (auth.isAuthenticated) {
-                try {
-                    const response = await getProductDetailWithStatsAPI(id);
+            // Luôn dùng API detail (đã hỗ trợ optional auth)
+            const response = await getProductDetailWithStatsAPI(id);
+            
+            console.log('Product detail API response:', response);
+            console.log('Response EC:', response?.EC);
+            console.log('Response data:', response?.data);
+            
+            // Axios interceptor đã unwrap response.data rồi
+            // response = { EC: 0, EM: '...', data: { product: {...}, similarProducts: [...], isFavorite: false } }
+            // response.data = { product: {...}, similarProducts: [...], isFavorite: false }
+            if (response && response.EC === 0 && response.data) {
+                const productData = response.data.product;
+                console.log('Setting product:', productData);
+                
+                if (productData) {
+                    setProduct(productData);
                     
-                    if (response && response.data && response.data.EC === 0 && response.data.data) {
-                        setProduct(response.data.data.product);
-                        
-                        // Track viewed product
+                    // Track viewed product nếu đã đăng nhập
+                    if (auth.isAuthenticated) {
                         try {
                             await addToViewedAPI(id);
                         } catch (error) {
                             console.error('Error tracking viewed product:', error);
+                            // Không hiển thị lỗi vì đây chỉ là tracking
                         }
-                    } else {
-                        const errorMsg = response?.data?.EM || response?.data?.message || 'Không tìm thấy sản phẩm';
-                        console.error('API Error:', response?.data);
-                        message.error(errorMsg);
-                        navigate('/');
                     }
-                } catch (apiError) {
-                    // Nếu API yêu cầu auth bị lỗi (401, 403), fallback về API public
-                    if (apiError.response?.status === 401 || apiError.response?.status === 403) {
-                        console.log('Auth error, falling back to public API');
-                        const response = await getProductByIdAPI(id);
-                        
-                        if (response && response.data && response.data.EC === 0 && response.data.data) {
-                            setProduct(response.data.data);
-                        } else {
-                            message.error(response?.data?.EM || 'Không tìm thấy sản phẩm');
-                            navigate('/');
-                        }
-                    } else {
-                        throw apiError;
-                    }
+                } else {
+                    console.error('Product data is null or undefined');
+                    message.error('Dữ liệu sản phẩm không hợp lệ');
+                    navigate('/');
                 }
             } else {
-                // Nếu chưa đăng nhập, dùng API cũ
-                const response = await getProductByIdAPI(id);
-                
-                if (response && response.data && response.data.EC === 0 && response.data.data) {
-                    setProduct(response.data.data);
-                } else {
-                    message.error(response?.data?.EM || 'Không tìm thấy sản phẩm');
+                // Nếu API detail fail, thử API cũ
+                try {
+                    const fallbackResponse = await getProductByIdAPI(id);
+                    // Axios interceptor đã unwrap, nên fallbackResponse đã là { EC: 0, EM: '...', data: {...} }
+                    if (fallbackResponse && fallbackResponse.EC === 0 && fallbackResponse.data) {
+                        setProduct(fallbackResponse.data);
+                    } else {
+                        message.error(fallbackResponse?.EM || response?.EM || 'Không tìm thấy sản phẩm');
+                        navigate('/');
+                    }
+                } catch (fallbackError) {
+                    message.error(response?.EM || 'Không tìm thấy sản phẩm');
                     navigate('/');
                 }
             }
         } catch (error) {
             console.error('Error fetching product:', error);
-            console.error('Error details:', error.response?.data || error.message);
-            
-            if (error.response?.status === 404) {
-                message.error('Sản phẩm không tồn tại');
-            } else if (error.response?.status === 401 || error.response?.status === 403) {
-                message.error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
-            } else {
-                message.error('Lỗi khi tải thông tin sản phẩm: ' + (error.message || 'Unknown error'));
+            // Thử fallback về API cũ
+            try {
+                const fallbackResponse = await getProductByIdAPI(id);
+                // Axios interceptor đã unwrap, nên fallbackResponse đã là { EC: 0, EM: '...', data: {...} }
+                if (fallbackResponse && fallbackResponse.EC === 0 && fallbackResponse.data) {
+                    setProduct(fallbackResponse.data);
+                } else {
+                    message.error('Lỗi khi tải thông tin sản phẩm');
+                    navigate('/');
+                }
+            } catch (fallbackError) {
+                message.error('Lỗi khi tải thông tin sản phẩm');
+                navigate('/');
             }
-            navigate('/');
         } finally {
             setLoading(false);
         }

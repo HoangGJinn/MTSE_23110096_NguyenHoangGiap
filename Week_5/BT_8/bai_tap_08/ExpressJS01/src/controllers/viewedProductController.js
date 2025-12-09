@@ -49,30 +49,23 @@ const getViewedProductsList = async (req, res) => {
     const userId = req.user.id;
     const { limit = 10 } = req.query;
 
-    console.log('getViewedProductsList - User ID:', userId, 'Limit:', limit);
-
     const products = await getViewedProducts(userId, limit);
 
-    if (products === null) {
+    if (!products) {
       return res.status(500).json({
         EC: -1,
         EM: 'Server error'
       });
     }
 
-    // Trả về mảng rỗng nếu không có sản phẩm nào
     return res.status(200).json({
       EC: 0,
       EM: 'Get viewed products success',
-      data: products || []
+      data: products
     });
   } catch (error) {
     console.error('getViewedProductsList Error:', error);
-    console.error('Error stack:', error.stack);
-    return res.status(500).json({ 
-      EC: -1, 
-      EM: 'Server error: ' + (error.message || 'Unknown error') 
-    });
+    return res.status(500).json({ EC: -1, EM: 'Server error' });
   }
 };
 

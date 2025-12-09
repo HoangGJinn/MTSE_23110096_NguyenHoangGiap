@@ -20,8 +20,9 @@ const FavoriteButton = ({ productId, size = 'default' }) => {
     const checkFavorite = async () => {
         try {
             const response = await checkFavoriteAPI(productId);
-            if (response && response.data && response.data.EC === 0) {
-                setIsFavorite(response.data.data.isFavorite);
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setIsFavorite(response.data.isFavorite);
             }
         } catch (error) {
             console.error('Error checking favorite:', error);
@@ -37,11 +38,12 @@ const FavoriteButton = ({ productId, size = 'default' }) => {
         setLoading(true);
         try {
             const response = await toggleFavoriteAPI(productId);
-            if (response && response.data && response.data.EC === 0) {
-                setIsFavorite(response.data.data.isFavorite);
-                message.success(response.data.EM || 'Thành công');
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setIsFavorite(response.data.isFavorite);
+                message.success(response.EM || 'Thành công');
             } else {
-                message.error(response?.data?.EM || 'Có lỗi xảy ra');
+                message.error(response?.EM || 'Có lỗi xảy ra');
             }
         } catch (error) {
             console.error('Error toggling favorite:', error);

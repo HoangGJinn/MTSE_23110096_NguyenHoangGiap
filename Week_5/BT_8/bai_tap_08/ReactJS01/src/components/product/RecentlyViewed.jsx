@@ -18,14 +18,16 @@ const RecentlyViewed = ({ limit = 6 }) => {
             fetchViewedProducts();
         } else {
             setLoading(false);
+            setProducts([]);
         }
     }, [auth.isAuthenticated]);
 
     const fetchViewedProducts = async () => {
         try {
             const response = await getViewedProductsAPI(limit);
-            if (response && response.data && response.data.EC === 0) {
-                setProducts(response.data.data);
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setProducts(response.data);
             }
         } catch (error) {
             console.error('Error fetching viewed products:', error);

@@ -18,8 +18,9 @@ const SimilarProducts = ({ productId, limit = 4 }) => {
     const fetchSimilarProducts = async () => {
         try {
             const response = await getSimilarProductsAPI(productId, limit);
-            if (response && response.data && response.data.EC === 0) {
-                setProducts(response.data.data);
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setProducts(response.data);
             }
         } catch (error) {
             console.error('Error fetching similar products:', error);

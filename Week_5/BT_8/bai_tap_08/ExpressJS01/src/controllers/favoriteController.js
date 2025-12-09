@@ -7,6 +7,13 @@ const {
 // Toggle favorite (thêm/xóa yêu thích)
 const toggleFavoriteProduct = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        EC: 1,
+        EM: 'Vui lòng đăng nhập để sử dụng tính năng này'
+      });
+    }
+    
     const userId = req.user.id;
     const { productId } = req.body;
 
@@ -49,6 +56,13 @@ const toggleFavoriteProduct = async (req, res) => {
 // Kiểm tra sản phẩm có trong danh sách yêu thích không
 const checkFavoriteStatus = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        EC: 1,
+        EM: 'Vui lòng đăng nhập để sử dụng tính năng này'
+      });
+    }
+    
     const userId = req.user.id;
     const { productId } = req.params;
 
@@ -68,6 +82,13 @@ const checkFavoriteStatus = async (req, res) => {
 // Lấy danh sách sản phẩm yêu thích
 const getFavoriteProducts = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        EC: 1,
+        EM: 'Vui lòng đăng nhập để sử dụng tính năng này'
+      });
+    }
+    
     const userId = req.user.id;
     const { page = 1, limit = 10 } = req.query;
 

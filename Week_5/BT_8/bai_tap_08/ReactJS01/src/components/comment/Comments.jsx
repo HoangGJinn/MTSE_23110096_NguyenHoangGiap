@@ -27,9 +27,10 @@ const Comments = ({ productId }) => {
         setLoading(true);
         try {
             const response = await getCommentsAPI(productId, page, limit);
-            if (response && response.data && response.data.EC === 0) {
-                setComments(response.data.data.comments);
-                setTotal(response.data.data.totalComments);
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0 && response.data) {
+                setComments(response.data.comments);
+                setTotal(response.data.totalComments);
             }
         } catch (error) {
             console.error('Error fetching comments:', error);
@@ -53,13 +54,14 @@ const Comments = ({ productId }) => {
         setSubmitting(true);
         try {
             const response = await createCommentAPI(productId, content, rating > 0 ? rating : null);
-            if (response && response.data && response.data.EC === 0) {
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0) {
                 message.success('Đã thêm bình luận');
                 setContent('');
                 setRating(0);
                 fetchComments();
             } else {
-                message.error(response?.data?.EM || 'Có lỗi xảy ra');
+                message.error(response?.EM || 'Có lỗi xảy ra');
             }
         } catch (error) {
             console.error('Error creating comment:', error);
@@ -72,11 +74,12 @@ const Comments = ({ productId }) => {
     const handleDelete = async (commentId) => {
         try {
             const response = await deleteCommentAPI(commentId);
-            if (response && response.data && response.data.EC === 0) {
+            // Axios interceptor đã unwrap response.data
+            if (response && response.EC === 0) {
                 message.success('Đã xóa bình luận');
                 fetchComments();
             } else {
-                message.error(response?.data?.EM || 'Có lỗi xảy ra');
+                message.error(response?.EM || 'Có lỗi xảy ra');
             }
         } catch (error) {
             console.error('Error deleting comment:', error);

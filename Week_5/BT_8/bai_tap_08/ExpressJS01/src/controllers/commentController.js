@@ -7,6 +7,13 @@ const {
 // Tạo bình luận mới
 const createProductComment = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        EC: 1,
+        EM: 'Vui lòng đăng nhập để bình luận'
+      });
+    }
+    
     const userId = req.user.id;
     const { productId, content, rating } = req.body;
 
@@ -73,6 +80,13 @@ const getProductComments = async (req, res) => {
 // Xóa bình luận
 const deleteProductComment = async (req, res) => {
   try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({
+        EC: 1,
+        EM: 'Vui lòng đăng nhập để xóa bình luận'
+      });
+    }
+    
     const userId = req.user.id;
     const isAdmin = req.user.role === 'Admin';
     const { commentId } = req.params;

@@ -85,8 +85,7 @@ const getSimilarProducts = async (productId, limit = 4) => {
       order: sequelize.literal('RAND()') // Sắp xếp ngẫu nhiên (MySQL)
     });
 
-    // Convert Sequelize models to JSON
-    return similarProducts.map(p => p.toJSON ? p.toJSON() : p);
+    return similarProducts;
   } catch (error) {
     console.error('Lỗi getSimilarProducts: ', error);
     return [];
